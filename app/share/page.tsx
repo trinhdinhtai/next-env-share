@@ -1,20 +1,12 @@
 "use client"
 
-import { Fragment, useState } from "react"
+import { useState } from "react"
 
 import ShareForm from "@/components/share-form"
 import { Title } from "@/components/title"
 
 const SharePage = () => {
-  const [text, setText] = useState("")
-  const [reads, setReads] = useState(999)
-
-  const [ttl, setTtl] = useState(7)
-  const [ttlMultiplier, setTtlMultiplier] = useState(60 * 60 * 24)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState("")
   const [copied, setCopied] = useState(false)
-
   const [link, setLink] = useState("")
 
   return (
@@ -25,7 +17,7 @@ const SharePage = () => {
         </div>
       ) : (
         <div className="mx-auto max-w-3xl">
-          <ShareForm />
+          <ShareForm setLink={setLink} setCopied={setCopied} />
         </div>
       )}
     </div>

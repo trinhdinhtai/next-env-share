@@ -1,6 +1,7 @@
 "use client"
 
 import { Fragment, useState } from "react"
+import { LATEST_KEY_VERSION } from "@/constants"
 import { shareSchema } from "@/validators"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
@@ -8,6 +9,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { toBase58 } from "@/lib/base58"
+import { encodeCompositeKey } from "@/lib/encoding"
 import { encrypt } from "@/lib/encryption"
 import { Button } from "@/components/ui/button"
 import {
@@ -29,7 +31,12 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Title } from "@/components/title"
 
-const ShareForm = () => {
+interface ShareFormProps {
+  setLink: (link: string) => void
+  setCopied: (copied: boolean) => void
+}
+
+const ShareForm = ({ setLink, setCopied }: ShareFormProps) => {
   const form = useForm<z.infer<typeof shareSchema>>({
     resolver: zodResolver(shareSchema),
     defaultValues: {
@@ -56,7 +63,15 @@ const ShareForm = () => {
     })
 
     const { id } = response.data
-    console.log("🚀 ~ file: share-form.tsx:59 ~ ShareForm ~ id:", id)
+
+    const compositeKey = encodeCompositeKey(LATEST_KEY_VERSION, id, key)
+
+    const url = new URL(window.location.href)
+    url.pathname = "/unseal"
+    url.hash = compositeKey
+
+    setCopied(false)
+    setLink(url.toString())
   }
 
   const { control, setValue } = form
