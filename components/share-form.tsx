@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
+import { toBase58 } from "@/lib/base58"
+import { encrypt } from "@/lib/encryption"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -38,7 +40,7 @@ const ShareForm = () => {
   })
 
   const onSubmit = async (values: z.infer<typeof shareSchema>) => {
-    // const { encrypted, iv, key } = await encrypt(values.text)
+    const { encrypted, iv, key } = await encrypt(values.text)
   }
 
   const { control, setValue } = form
