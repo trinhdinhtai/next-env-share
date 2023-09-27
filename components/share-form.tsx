@@ -3,6 +3,7 @@
 import { Fragment, useState } from "react"
 import { shareSchema } from "@/validators"
 import { zodResolver } from "@hookform/resolvers/zod"
+import axios from "axios"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 
@@ -39,8 +40,23 @@ const ShareForm = () => {
     },
   })
 
-  const onSubmit = async (values: z.infer<typeof shareSchema>) => {
-    const { encrypted, iv, key } = await encrypt(values.text)
+  const onSubmit = async ({
+    text,
+    remainingReads,
+    timeToLive,
+    multiple,
+  }: z.infer<typeof shareSchema>) => {
+    const { encrypted, iv, key } = await encrypt(text)
+
+    const response = await axios.post("/api/v1/store", {
+      encrypted: toBase58(encrypted),
+      iv: toBase58(iv),
+      reads: parseInt(remainingReads),
+      ttl: parseInt(timeToLive) * parseInt(multiple),
+    })
+
+    const { id } = response.data
+    console.log("🚀 ~ file: share-form.tsx:59 ~ ShareForm ~ id:", id)
   }
 
   const { control, setValue } = form
