@@ -31,6 +31,8 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 import { Title } from "@/components/title"
 
+import { LoadingDots } from "./ui/loading-dots"
+
 interface ShareFormProps {
   setLink: (link: string) => void
   setCopied: (copied: boolean) => void
@@ -74,7 +76,11 @@ const ShareForm = ({ setLink, setCopied }: ShareFormProps) => {
     setLink(url.toString())
   }
 
-  const { control, setValue } = form
+  const {
+    control,
+    setValue,
+    formState: { isSubmitting },
+  } = form
 
   return (
     <div>
@@ -208,7 +214,7 @@ const ShareForm = ({ setLink, setCopied }: ShareFormProps) => {
           </div>
 
           <Button type="submit" className="w-full font-bold uppercase">
-            Share
+            {isSubmitting ? <LoadingDots /> : "Share"}
           </Button>
 
           <div className="mt-8">
