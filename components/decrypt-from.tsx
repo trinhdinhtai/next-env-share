@@ -1,7 +1,6 @@
 "use client"
 
-import { Fragment, useEffect, useState } from "react"
-import { LATEST_KEY_VERSION } from "@/constants"
+import { useEffect } from "react"
 import { decryptSchema } from "@/validators"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
@@ -9,6 +8,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 
 import { decodeCompositeKey } from "@/lib/encoding"
+import { decrypt } from "@/lib/encryption"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -44,6 +44,9 @@ const DecryptForm = ({ setText, setRemainingReads }: DecryptFormProps) => {
 
       const { encrypted, remainingReads, iv } = response.data
 
+      const decrypted = await decrypt(encrypted, encryptionKey, iv, version)
+
+      setText(decrypted)
       setRemainingReads(remainingReads)
     } catch (error) {
       console.log("error", error)

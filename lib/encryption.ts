@@ -1,3 +1,5 @@
+import { fromBase58 } from "@/lib/base58"
+
 export async function generateKey() {
   return await crypto.subtle.generateKey(
     {
@@ -31,4 +33,32 @@ export async function encrypt(
     key: new Uint8Array(exportedKey),
     iv,
   }
+}
+
+export async function decrypt(
+  encrypted: string,
+  keyData: Uint8Array,
+  iv: string,
+  keyVersion: number
+): Promise<string> {
+  const algorithm = keyVersion === 1 ? "AES-CBC" : "AES-GCM"
+
+  const key = await crypto.subtle.importKey(
+    "raw",
+    keyData,
+    { name: algorithm, length: 128 },
+    false,
+    ["decrypt"]
+  )
+
+  const decrypted = await crypto.subtle.decrypt(
+    {
+      name: algorithm,
+      iv: fromBase58(iv),
+    },
+    key,
+    fromBase58(encrypted)
+  )
+
+  return new TextDecoder().decode(decrypted)
 }

@@ -1,5 +1,7 @@
 import { Copy, CopyCheck } from "lucide-react"
 
+import CopyButton from "@/components/copy-button"
+
 import { Title } from "./title"
 import { Button } from "./ui/button"
 
@@ -20,25 +22,11 @@ const ShareLink = ({ link, setLink, copied, setCopied }: ShareLinkProps) => {
           {link}
         </pre>
 
-        <button
-          type="button"
-          className="hover relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-zinc-300 bg-zinc-50 px-4 py-2 text-sm font-medium text-zinc-700 duration-150 hover:bg-white hover:text-zinc-900 focus:border-zinc-500 focus:outline-none focus:ring-1 focus:ring-zinc-500"
-          onClick={() => {
-            navigator.clipboard.writeText(link)
-            setCopied(true)
-          }}
-        >
-          {copied ? (
-            <CopyCheck className="h-5 w-5" aria-hidden="true" />
-          ) : (
-            <Copy className="h-5 w-5" aria-hidden="true" />
-          )}{" "}
-          <span>{copied ? "Copied" : "Copy"}</span>
-        </button>
+        <CopyButton text={link} copied={copied} setCopied={setCopied} />
       </div>
 
-      <Button className="mt-16" onClick={() => setLink("")}>
-        Share new ENV
+      <Button className="mt-8" variant="outline" onClick={() => setLink("")}>
+        Share another
       </Button>
     </div>
   )
