@@ -2,7 +2,6 @@
 
 import { Fragment, useState } from "react"
 import { LATEST_KEY_VERSION } from "@/constants"
-import { shareSchema } from "@/validators"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { useForm } from "react-hook-form"
@@ -11,6 +10,7 @@ import * as z from "zod"
 import { toBase58 } from "@/lib/base58"
 import { encodeCompositeKey } from "@/lib/encoding"
 import { encrypt } from "@/lib/encryption"
+import { shareSchema } from "@/lib/validations"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -38,8 +38,10 @@ interface ShareFormProps {
   setCopied: (copied: boolean) => void
 }
 
+type FormData = z.infer<typeof shareSchema>
+
 const ShareForm = ({ setLink, setCopied }: ShareFormProps) => {
-  const form = useForm<z.infer<typeof shareSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(shareSchema),
     defaultValues: {
       text: "",
@@ -54,7 +56,7 @@ const ShareForm = ({ setLink, setCopied }: ShareFormProps) => {
     remainingReads,
     timeToLive,
     multiple,
-  }: z.infer<typeof shareSchema>) => {
+  }: FormData) => {
     const { encrypted, iv, key } = await encrypt(text)
 
     const response = await axios.post("/api/v1/store", {
@@ -133,7 +135,7 @@ const ShareForm = ({ setLink, setCopied }: ShareFormProps) => {
                   <FormItem>
                     <FormLabel className="uppercase">reads</FormLabel>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input variant="ghost" type="number" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -150,7 +152,7 @@ const ShareForm = ({ setLink, setCopied }: ShareFormProps) => {
                     <FormItem>
                       <FormLabel className="uppercase">ttl</FormLabel>
                       <FormControl>
-                        <Input type="number" {...field} />
+                        <Input variant="ghost" type="number" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

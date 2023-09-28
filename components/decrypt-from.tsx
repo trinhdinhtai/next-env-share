@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect } from "react"
-import { decryptSchema } from "@/validators"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { useForm } from "react-hook-form"
@@ -9,6 +8,7 @@ import * as z from "zod"
 
 import { decodeCompositeKey } from "@/lib/encoding"
 import { decrypt } from "@/lib/encryption"
+import { decryptSchema } from "@/lib/validations"
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -79,7 +79,11 @@ const DecryptForm = ({ setText, setRemainingReads }: DecryptFormProps) => {
                 <FormItem>
                   <FormLabel className="uppercase">id</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="URL" />
+                    <Input
+                      variant="ghost"
+                      {...field}
+                      placeholder="Paste your ID..."
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
