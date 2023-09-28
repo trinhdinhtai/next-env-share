@@ -6,3 +6,7 @@ export const shareSchema = z.object({
   timeToLive: z.string().min(1, "Min 1 minute"),
   multiple: z.string(),
 })
+
+export const decryptSchema = z.object({
+  compositeKey: z.string().min(3, "Min 3 characters"),
+})

@@ -19,9 +19,7 @@ const SharePage = () => {
           setLink={setLink}
         />
       ) : (
-        <div className="mx-auto max-w-3xl">
-          <ShareForm setLink={setLink} setCopied={setCopied} />
-        </div>
+        <ShareForm setLink={setLink} setCopied={setCopied} />
       )}
     </div>
   )

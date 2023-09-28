@@ -83,7 +83,7 @@ const ShareForm = ({ setLink, setCopied }: ShareFormProps) => {
   } = form
 
   return (
-    <div>
+    <div className="mx-auto max-w-3xl">
       <Title>Encrypt and Share</Title>
 
       <Form {...form}>
