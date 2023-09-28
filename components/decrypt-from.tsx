@@ -31,22 +31,33 @@ const DecryptForm = ({ setText }: DecryptFormProps) => {
   const form = useForm<z.infer<typeof decryptSchema>>({
     resolver: zodResolver(decryptSchema),
     defaultValues: {
-      compositeKey: window.location.hash.replace(/^#/, "") || "",
+      compositeKey: "",
     },
   })
 
   const onSubmit = async ({ compositeKey }: z.infer<typeof decryptSchema>) => {
     try {
       const { id, encryptionKey, version } = decodeCompositeKey(compositeKey)
-    } catch {
-      console.log("error")
+
+      const response = await axios.post(`/api/v1/load/${id}`)
+
+      const { encrypted, remainingReads, iv } = response.data
+    } catch (error) {
+      console.log("error", error)
     }
   }
 
   const {
     control,
+    setValue,
     formState: { isSubmitting },
   } = form
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setValue("compositeKey", window.location.hash.replace(/^#/, ""))
+    }
+  }, [])
 
   return (
     <div className="mx-auto max-w-3xl">
