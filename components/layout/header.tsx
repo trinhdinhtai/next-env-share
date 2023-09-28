@@ -3,6 +3,9 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+
 const navigationLinks = [
   {
     name: "Share",
@@ -12,19 +15,13 @@ const navigationLinks = [
     name: "Unseal",
     href: "/unseal",
   },
-
-  {
-    name: "GitHub",
-    href: "https://github.com/trinhdinhtai/next-env-share",
-    external: true,
-  },
 ] satisfies { name: string; href: string; external?: boolean }[]
 
 const Header = () => {
   const pathname = usePathname()
 
   return (
-    <header className="top-0 z-30 w-full border-b bg-background/70 px-4 backdrop-blur sm:fixed">
+    <header className="top-0 z-30 w-full border-b bg-background/70 px-4 backdrop-blur sm:sticky">
       <div className="container mx-auto">
         <div className="flex flex-col items-center justify-between gap-2 pt-6 sm:h-20 sm:flex-row sm:pt-0">
           <Link
@@ -45,13 +42,21 @@ const Header = () => {
                       pathname === link.href ? "text-zinc-200" : "text-zinc-400"
                     }`}
                     href={link.href}
-                    target={link.external ? "_blank" : undefined}
-                    rel={link.external ? "noopener noreferrer" : undefined}
                   >
                     {link.name}
                   </Link>
                 </li>
               ))}
+
+              <Link
+                href="/login"
+                className={cn(
+                  buttonVariants({ variant: "secondary" }),
+                  "text-sm sm:text-base"
+                )}
+              >
+                Login
+              </Link>
             </ul>
           </nav>
         </div>

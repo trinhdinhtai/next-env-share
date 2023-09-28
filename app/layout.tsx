@@ -25,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head />
-      <body className={cn(inter.className, "relative min-h-screen")}>
+      <body
+        className={cn(inter.className, "relative flex min-h-screen flex-col")}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
@@ -33,7 +35,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <main className="min-h-[80vh]">{children}</main>
+          <main className="flex-1">{children}</main>
           <Footer />
           <TailwindIndicator />
         </ThemeProvider>

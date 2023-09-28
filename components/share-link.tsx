@@ -1,5 +1,3 @@
-import { Copy, CopyCheck } from "lucide-react"
-
 import CopyButton from "@/components/copy-button"
 
 import { Title } from "./title"
