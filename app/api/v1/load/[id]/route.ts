@@ -11,7 +11,6 @@ export async function POST(
 ) {
   try {
     const { id } = params
-    console.log("file: route.ts:14 ~ id:", id)
 
     if (!id) {
       return new NextResponse("Id is required", { status: 400 })

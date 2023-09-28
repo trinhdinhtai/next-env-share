@@ -25,9 +25,10 @@ import { LoadingDots } from "./ui/loading-dots"
 
 interface DecryptFormProps {
   setText: (text: string) => void
+  setRemainingReads: (remainingReads: number) => void
 }
 
-const DecryptForm = ({ setText }: DecryptFormProps) => {
+const DecryptForm = ({ setText, setRemainingReads }: DecryptFormProps) => {
   const form = useForm<z.infer<typeof decryptSchema>>({
     resolver: zodResolver(decryptSchema),
     defaultValues: {
@@ -42,6 +43,8 @@ const DecryptForm = ({ setText }: DecryptFormProps) => {
       const response = await axios.post(`/api/v1/load/${id}`)
 
       const { encrypted, remainingReads, iv } = response.data
+
+      setRemainingReads(remainingReads)
     } catch (error) {
       console.log("error", error)
     }
